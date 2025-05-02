@@ -2,6 +2,10 @@ import SafariServices
 import UIKit
 @preconcurrency import WebKit
 
+// NOTE: This is a transitional duplicate of Features/Hub/Views/WebViewController.swift
+// It is kept here temporarily for backward compatibility during codebase reorganization.
+// The canonical location for this file is now in the Features directory structure.
+
 /// Enhanced WebViewController for BDG Hub with modern UI and features
 @preconcurrency class WebViewController: UIViewController, WKNavigationDelegate, UIScrollViewDelegate {
     // MARK: - UI Components
