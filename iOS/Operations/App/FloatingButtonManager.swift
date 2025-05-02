@@ -1,5 +1,6 @@
 import SwiftUI
 import UIKit
+import CoreData
 
 // MARK: - Notification Names
 
@@ -20,6 +21,9 @@ final class FloatingButtonManager {
         get { stateQueue.sync { _isPresentingChat } }
         set { stateQueue.sync { _isPresentingChat = newValue } }
     }
+
+    // Processing queue for handling asynchronous tasks
+    private let processingQueue = DispatchQueue(label: "com.backdoor.aiProcessing", qos: .userInitiated)
 
     // Button management
     private var activeButton: FloatingTerminalButton?
@@ -42,6 +46,29 @@ final class FloatingButtonManager {
     }
 
     // MARK: - API
+
+    /// Called from notification
+    @objc func showAIAssistant(notification: Notification) {
+        guard let viewController = notification.object as? UIViewController else {
+            print("showAIAssistant notification received without a valid view controller")
+            return
+        }
+        
+        presentAIAssistant(from: viewController)
+    }
+
+    /// Shows the AI button. This is called from AppDelegate.
+    func show() {
+        guard let rootVC = UIApplication.shared.windows.first?.rootViewController else {
+            return
+        }
+        addButton(to: rootVC)
+    }
+
+    /// Hides the AI button. This is called from AppDelegate.
+    func hide() {
+        removeButton()
+    }
 
     /// Shows or hides the floating button in the specified view controller
     func toggleButton(in viewController: UIViewController) {
@@ -116,15 +143,6 @@ final class FloatingButtonManager {
         presentAIAssistant(from: viewController)
     }
 
-    @objc private func showAIAssistant(notification: Notification) {
-        guard let viewController = notification.object as? UIViewController else {
-            print("showAIAssistant notification received without a valid view controller")
-            return
-        }
-        
-        presentAIAssistant(from: viewController)
-    }
-
     private func presentAIAssistant(from presenter: UIViewController) {
         // Prevent multiple presentations
         guard !isPresentingChat else { return }
@@ -190,7 +208,7 @@ final class FloatingButtonManager {
             presentViewControllerSafely(navController, from: presenter)
             
         } catch {
-            print("Failed to create or fetch chat session: \(error.localizedDescription)")
+            showErrorAlert(message: "Failed to create or fetch chat session: \(error.localizedDescription)", on: presenter)
             isPresentingChat = false
         }
     }
@@ -211,6 +229,27 @@ final class FloatingButtonManager {
         } else {
             // Fallback to the original presenter
             presenter.present(viewController, animated: true, completion: nil)
+        }
+    }
+    
+    private func showErrorAlert(message: String, on viewController: UIViewController) {
+        let alert = UIAlertController(
+            title: "Chat Error",
+            message: message,
+            preferredStyle: .alert
+        )
+
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+
+        // Present alert with a slight delay to ensure any pending transitions complete
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            if viewController.presentedViewController == nil, !viewController.isBeingDismissed {
+                viewController.present(alert, animated: true)
+            } else {
+                // If we can't present, at least log the error
+                print("Could not present error alert: \(message)")
+                self.isPresentingChat = false
+            }
         }
     }
 }
