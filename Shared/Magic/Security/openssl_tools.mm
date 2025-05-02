@@ -11,7 +11,7 @@
  */
 
 #include "openssl_tools.hpp"
-#include "zsign/Utils.hpp"
+#include "../Signing/zsign/Utils.hpp"
 #include "zsign/common/common.h"
 
 #include <openssl/cms.h>
