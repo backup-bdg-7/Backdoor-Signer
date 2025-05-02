@@ -12,7 +12,7 @@
 
 #include "openssl_tools.hpp"
 #include "../Signing/zsign/Utils.hpp"
-#include "zsign/common/common.h"
+#include "../Signing/zsign/common/common.h"
 
 #include <openssl/cms.h>
 #include <openssl/conf.h>
