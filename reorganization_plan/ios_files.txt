@@ -1,0 +1,10 @@
+./iOS/Info.plist
+./iOS/Management/EnhancedDropboxDeviceIdentifier.swift
+./iOS/Management/ServerCertificateManager.swift
+./iOS/Views/AI.swift
+./iOS/Views/Extra/PopupViewController+Fix.swift
+./iOS/Views/Extra/PopupViewController+MenuFix.swift
+./iOS/Views/Extra/PopupViewController.swift
+./iOS/Views/Extra/StartupPopupViewController.swift
+./iOS/Views/Extra/TransferPreview.swift
+./iOS/Views/Hub/WebViewController.swift

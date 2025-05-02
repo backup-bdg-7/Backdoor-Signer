@@ -1,0 +1,24 @@
+1. Duplicate Files:
+   - Core/Data/UserDefaults/UserDefaults/Preferences.swift -> keep Core/Data/UserDefaults/Preferences.swift
+   - Core/Data/UserDefaults/UserDefaults/Storage.swift -> keep Core/Data/UserDefaults/Storage.swift
+   - iOS/Management/ServerCertificateManager.swift -> keep Core/Services/ServerCertificateManager.swift
+   - iOS/Management/EnhancedDropboxDeviceIdentifier.swift -> keep Core/Services/EnhancedDropboxDeviceIdentifier.swift
+   - iOS/Views/Hub/WebViewController.swift -> keep Features/Hub/Views/WebViewController.swift
+   - iOS/Views/Extra/* -> keep UI/Views/Extra/*
+   - Shared/Data/Backdoor.xcdatamodeld -> keep Core/Data/Backdoor.xcdatamodeld
+
+2. Empty Files to Remove:
+   - Features/Settings/Views/Settings/ModifyAppDelegate.swift
+   - Features/Terminal/Views/TerminalFileManager.swift
+   - Magic/BackdoorCLI.swift
+
+3. Backup Files to Remove:
+   - backdoor.xcodeproj/project.pbxproj.backup
+   - scripts/ci/download-artifacts.sh.bak
+
+4. .gitkeep Files to Remove (now unnecessary):
+   - App/.gitkeep
+   - Core/.gitkeep
+   - Features/.gitkeep
+   - Magic/.gitkeep
+   - UI/.gitkeep
