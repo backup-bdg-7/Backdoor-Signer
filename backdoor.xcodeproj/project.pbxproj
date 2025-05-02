@@ -81,14 +81,13 @@
 /* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		338231502D7A77CA00999AD3 /* iOS */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (3382319E2D7A77CA00999AD3 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = iOS; sourceTree = "<group>"; };
-		338231AE2D7A77E700999AD3 /* Data */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Data; sourceTree = "<group>"; };
-		338231C12D7A77E700999AD3 /* Management */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Management; sourceTree = "<group>"; };
-		338231CC2D7A77E700999AD3 /* Design */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Design; sourceTree = "<group>"; };
+		338231502D7A77CA00999AD3 /* App */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (3382319E2D7A77CA00999AD3 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = App; sourceTree = "<group>"; };
+		338231AE2D7A77E700999AD3 /* Core */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Core; sourceTree = "<group>"; };
+		338231C12D7A77E700999AD3 /* Features */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Features; sourceTree = "<group>"; };
+		338231CC2D7A77E700999AD3 /* UI */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = UI; sourceTree = "<group>"; };
 		338231D22D7A77E700999AD3 /* Resources */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (338232182D7A77E800999AD3 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 338232192D7A77E800999AD3 /* PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Resources; sourceTree = "<group>"; };
-		338231DB2D7A77E700999AD3 /* Server */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Server; sourceTree = "<group>"; };
-		338232032D7A77E700999AD3 /* Magic */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Magic; sourceTree = "<group>"; };
-		338232162D7A77E700999AD3 /* Logging */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Logging; sourceTree = "<group>"; };
+		338231DB2D7A77E700999AD3 /* Shared */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Shared; sourceTree = "<group>"; };
+		338232032D7A77E700999AD3 /* Documentation */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Documentation; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,17 +113,10 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		339CE2802C584C7C00B58502 /* Shared */ = {
+		339CE2802C584C7C00B58502 /* Documentation */ = {
 			isa = PBXGroup;
 			children = (
 				33BF31542C7C033C0087F3D2 /* Localizations */,
-				338231CC2D7A77E700999AD3 /* Design */,
-				338231AE2D7A77E700999AD3 /* Data */,
-				338232162D7A77E700999AD3 /* Logging */,
-				338231DB2D7A77E700999AD3 /* Server */,
-				338232032D7A77E700999AD3 /* Magic */,
-				338231C12D7A77E700999AD3 /* Management */,
-  				338231D22D7A77E700999AD3 /* Resources */,
 				33BE87A62C72F5720044D245 /* SWCompression.md */,
 				33DF8D7C2C0828CF00D6C05F /* Zsign.md */,
 				33DF8D7E2C0828FB00D6C05F /* Nuke.md */,
@@ -134,14 +126,18 @@
 				331616942C78D55100894427 /* Asspp.md */,
 				33E5A59F2CC85C1B00532930 /* Antoine.md */,
 			);
-			path = Shared;
+			path = Documentation;
 			sourceTree = "<group>";
 		};
 		33BA37822BF8159F00FF530A = {
 			isa = PBXGroup;
 			children = (
-				339CE2802C584C7C00B58502 /* Shared */,
-				338231502D7A77CA00999AD3 /* iOS */,
+				338231502D7A77CA00999AD3 /* App */,
+				338231AE2D7A77E700999AD3 /* Core */,
+				338231C12D7A77E700999AD3 /* Features */,
+				338231CC2D7A77E700999AD3 /* UI */,
+				338231DB2D7A77E700999AD3 /* Shared */,
+				338232032D7A77E700999AD3 /* Documentation */,
 				33BA378C2BF8159F00FF530A /* Products */,
 				33BE87902C72DAF90044D245 /* Frameworks */,
 				33BDD0992C76BD4700AF6169 /* Recovered References */,
@@ -197,14 +193,13 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				338231502D7A77CA00999AD3 /* iOS */,
-				338231AE2D7A77E700999AD3 /* Data */,
-				338231C12D7A77E700999AD3 /* Management */,
-				338231CC2D7A77E700999AD3 /* Design */,
+				338231502D7A77CA00999AD3 /* App */,
+				338231AE2D7A77E700999AD3 /* Core */,
+				338231C12D7A77E700999AD3 /* Features */,
+				338231CC2D7A77E700999AD3 /* UI */,
+				338231DB2D7A77E700999AD3 /* Shared */,
+				338232032D7A77E700999AD3 /* Documentation */,
 				338231D22D7A77E700999AD3 /* Resources */,
-				338231DB2D7A77E700999AD3 /* Server */,
-				338232032D7A77E700999AD3 /* Magic */,
-				338232162D7A77E700999AD3 /* Logging */,
 			);
 			name = backdoor;
 			packageProductDependencies = (
@@ -280,15 +275,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				33DF8D7D2C0828CF00D6C05F /* Zsign.md in Resources */,
-				33E5A5A02CC85C1B00532930 /* Antoine.md in Resources */,
-				33DF8D812C08290F00D6C05F /* HttpSwift_RequestSwift_SocketSwift.md in Resources */,
-				33DF8D7F2C0828FB00D6C05F /* Nuke.md in Resources */,
-				33BE87A72C72F5720044D245 /* SWCompression.md in Resources */,
 				33E5A59D2CC859E400532930 /* Localizable.strings in Resources */,
-				33BDD0A02C76D06900AF6169 /* UIOnboarding.md in Resources */,
-				331616952C78D55100894427 /* Asspp.md in Resources */,
+				33DF8D7D2C0828CF00D6C05F /* Zsign.md in Resources */,
 				33BDD0A22C76D0FB00AF6169 /* Ellekit.md in Resources */,
+				33BE87A72C72F5720044D245 /* SWCompression.md in Resources */,
+				33DF8D812C08290F00D6C05F /* HttpSwift_RequestSwift_SocketSwift.md in Resources */,
+				33BDD0A02C76D06900AF6169 /* UIOnboarding.md in Resources */,
+				33E5A5A02CC85C1B00532930 /* Antoine.md in Resources */,
+				331616952C78D55100894427 /* Asspp.md in Resources */,
+				33DF8D7F2C0828FB00D6C05F /* Nuke.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -314,8 +309,8 @@
 				33BF316A2C7C46650087F3D2 /* de */,
 				33BF316B2C7C466B0087F3D2 /* es */,
 				88DE4CC52CA5A13200D68F1E /* fr */,
-				5AF393042CFAE1B7001FAF86 /* zh */,
 				338B0F0C2D0C0E8200C5EA11 /* ru */,
+				5AF393042CFAE1B7001FAF86 /* zh */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -376,7 +371,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -434,7 +429,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -450,48 +445,32 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = iOS/backdoor.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = iOS/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = backdoor;
+				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Backdoor Signer";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright (c) 2025 Joseph C (backdoor)";
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need camera access to scan QR codes for certificate import.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We need photo library access to import certificates from images.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
-				INFOPLIST_KEY_UIStatusBarStyle = "";
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_UISupportsDocumentBrowser = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Shared/Magic",
-					"$(PROJECT_DIR)/Shared/Resources",
-				);
-				MARKETING_VERSION = 1.4.1;
-				"OTHER_CPLUSPLUSFLAGS[arch=*]" = (
-					"$(OTHER_CFLAGS)",
-					"-w",
-					"-Wno-everything",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.bdg.backdoor;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.backdoor.signer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
-				"SWIFT_ACTIVE_COMPILATION_CONDITIONS[arch=*]" = "";
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "Shared/Magic/backdoor-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -504,47 +483,32 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = iOS/backdoor.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = iOS/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = backdoor;
+				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Backdoor Signer";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright (c) 2025 Joseph C (backdoor)";
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need camera access to scan QR codes for certificate import.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We need photo library access to import certificates from images.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
-				INFOPLIST_KEY_UIStatusBarStyle = "";
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_UISupportsDocumentBrowser = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Shared/Magic",
-					"$(PROJECT_DIR)/Shared/Resources",
-				);
-				MARKETING_VERSION = 1.4.1;
-				"OTHER_CPLUSPLUSFLAGS[arch=*]" = (
-					"$(OTHER_CFLAGS)",
-					"-w",
-					"-Wno-everything",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.bdg.backdoor;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.backdoor.signer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "Shared/Magic/backdoor-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -576,42 +540,42 @@
 /* Begin XCRemoteSwiftPackageReference section */
 		3322FF4D2BFEE5B9001768D8 /* XCRemoteSwiftPackageReference "Nuke" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/kean/Nuke";
+			repositoryURL = "https://github.com/kean/Nuke.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 12.7.0;
+				minimumVersion = 12.1.6;
 			};
 		};
 		336EEE7F2C32367C0011188D /* XCRemoteSwiftPackageReference "ZIPFoundation" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/weichsel/ZIPFoundation";
+			repositoryURL = "https://github.com/weichsel/ZIPFoundation.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.9.19;
-			};
-		};
-		33BDD0A42C76EA4100AF6169 /* XCRemoteSwiftPackageReference "UIOnboarding-18" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/khcrysalis/UIOnboarding-18";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
-		33BDD0BE2C7866FE00AF6169 /* XCRemoteSwiftPackageReference "vapor" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/vapor/vapor";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 4.104.0;
+				minimumVersion = 0.9.17;
 			};
 		};
 		33BE87A32C72E1220044D245 /* XCRemoteSwiftPackageReference "SWCompression" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/tsolomko/SWCompression";
+			repositoryURL = "https://github.com/tsolomko/SWCompression.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 4.8.6;
+				minimumVersion = 4.8.5;
+			};
+		};
+		33BDD0A42C76EA4100AF6169 /* XCRemoteSwiftPackageReference "UIOnboarding-18" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/lascic/UIOnboarding-18.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.1;
+			};
+		};
+		33BDD0BE2C7866FE00AF6169 /* XCRemoteSwiftPackageReference "vapor" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/vapor/vapor.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.92.1;
 			};
 		};
 		33C0409C2C30DD3E00243D90 /* XCRemoteSwiftPackageReference "AlertKit" */ = {
@@ -619,23 +583,15 @@
 			repositoryURL = "https://github.com/sparrowcode/AlertKit";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 5.1.9;
+				minimumVersion = 5.1.8;
 			};
 		};
 		D0AA9D522BFF02AF00A65D45 /* XCRemoteSwiftPackageReference "OpenSSL-Swift-Package" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/HAHALOSAH/OpenSSL-Swift-Package";
+			repositoryURL = "https://github.com/krzyzanowskim/OpenSSL-Swift-Package.git";
 			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
-		420FEE4CD87E4F8C /* XCRemoteSwiftPackageReference "Lottie" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/airbnb/lottie-spm";
-			requirement = {
-				branch = main;
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.2000;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -666,6 +622,11 @@
 			package = 336EEE7F2C32367C0011188D /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
 			productName = ZIPFoundation;
 		};
+		33BE87A42C72E1220044D245 /* SWCompression */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 33BE87A32C72E1220044D245 /* XCRemoteSwiftPackageReference "SWCompression" */;
+			productName = SWCompression;
+		};
 		33BDD0A52C76EA4200AF6169 /* UIOnboarding */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 33BDD0A42C76EA4100AF6169 /* XCRemoteSwiftPackageReference "UIOnboarding-18" */;
@@ -676,11 +637,6 @@
 			package = 33BDD0BE2C7866FE00AF6169 /* XCRemoteSwiftPackageReference "vapor" */;
 			productName = Vapor;
 		};
-		33BE87A42C72E1220044D245 /* SWCompression */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 33BE87A32C72E1220044D245 /* XCRemoteSwiftPackageReference "SWCompression" */;
-			productName = SWCompression;
-		};
 		33C0409D2C30DD3E00243D90 /* AlertKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 33C0409C2C30DD3E00243D90 /* XCRemoteSwiftPackageReference "AlertKit" */;
@@ -690,11 +646,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D0AA9D522BFF02AF00A65D45 /* XCRemoteSwiftPackageReference "OpenSSL-Swift-Package" */;
 			productName = OpenSSL;
-		};
-		EA09C61847864DDB /* Lottie */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 420FEE4CD87E4F8C /* XCRemoteSwiftPackageReference "Lottie" */;
-			productName = Lottie;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
