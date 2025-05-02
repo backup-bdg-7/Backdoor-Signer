@@ -449,14 +449,13 @@ class SigningsViewController: UIViewController {
             offlineIndicator.widthAnchor.constraint(greaterThanOrEqualToConstant: 120),
         ])
 
-        // Add LED glow effect to make it noticeable
-        offlineIndicator.addLEDEffect(
-            color: .systemRed,
-            intensity: 0.5,
-            spread: 5,
-            animated: true,
-            animationDuration: 1.5
-        )
+        // LED effect has been disabled for stability
+        // Use a simple animation instead
+        UIView.animate(withDuration: 0.5, delay: 0, options: [.autoreverse, .repeat], animations: {
+            offlineIndicator.alpha = 0.7
+        }, completion: { _ in
+            offlineIndicator.alpha = 1.0
+        })
     }
 
     /// Configure signing options specifically for offline mode

@@ -51,41 +51,12 @@ extension UIView {
         animated: Bool = true,
         animationDuration: TimeInterval = 2.0
     ) {
-        // Remove any existing LED effect
-        removeLEDEffect()
-
-        // Create the gradient layer for the LED effect
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.frame = bounds.insetBy(dx: -spread, dy: -spread)
-
-        // Set up gradient colors with transparency for subtle glow
-        let innerColor = color.withAlphaComponent(intensity)
-        let outerColor = color.withAlphaComponent(0)
-
-        gradientLayer.colors = [outerColor.cgColor, innerColor.cgColor, innerColor.cgColor, outerColor.cgColor]
-        gradientLayer.locations = [0.0, 0.3, 0.7, 1.0]
-
-        // Use a radial gradient for omnidirectional glow
-        gradientLayer.type = .radial
-        gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.5)
-        gradientLayer.endPoint = CGPoint(x: 1.0, y: 1.0)
-
-        // Make sure the layer is positioned below content
-        if let index = layer.sublayers?.firstIndex(where: { $0 is CAGradientLayer }) {
-            layer.insertSublayer(gradientLayer, at: UInt32(index))
-        } else {
-            layer.insertSublayer(gradientLayer, at: 0)
-        }
-
-        ledGradientLayer = gradientLayer
-
-        // Position and update the layer
-        updateLEDLayerPosition()
-
-        // Add animation if needed
-        if animated {
-            addLEDAnimation(duration: animationDuration, intensity: intensity)
-        }
+        // This method is now a no-op to prevent crashes
+        // The LED effect feature has been disabled for stability reasons
+        Debug.shared.log(message: "LED effect has been disabled for stability", type: .info)
+        
+        // No LED effect will be applied
+        return
     }
 
     /// Add a flowing LED effect that follows the outline of the view
@@ -100,100 +71,12 @@ extension UIView {
         width: CGFloat = 5,
         speed: TimeInterval = 2.0
     ) {
-        // Skip if view bounds are invalid or very small
-        guard bounds.width > 10, bounds.height > 10, window != nil else {
-            Debug.shared.log(message: "Skipping LED effect - invalid view dimensions or not in window", type: .warning)
-            return
-        }
+        // This method is now a no-op to prevent crashes
+        // The LED effect feature has been disabled for stability reasons
+        Debug.shared.log(message: "Flowing LED effect has been disabled for stability", type: .info)
         
-        // Remove any existing LED effect
-        removeLEDEffect()
-        
-        // Use main thread for UI updates
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self, self.window != nil else { return }
-            
-            // Create the gradient layer with defensive bounds checking
-            let gradientLayer = CAGradientLayer()
-            let safeWidth = min(width, min(self.bounds.width, self.bounds.height) / 4)
-            
-            gradientLayer.frame = CGRect(
-                x: -safeWidth,
-                y: -safeWidth,
-                width: self.bounds.width + safeWidth * 2,
-                height: self.bounds.height + safeWidth * 2
-            )
-
-            // Use safer intensity value to prevent visual issues
-            let safeIntensity = min(intensity, 0.6)
-            
-            // Create gradient of the LED effect going around the view
-            gradientLayer.colors = [
-                color.withAlphaComponent(0).cgColor,
-                color.withAlphaComponent(safeIntensity).cgColor,
-                color.withAlphaComponent(safeIntensity).cgColor,
-                color.withAlphaComponent(0).cgColor,
-            ]
-
-            // Set initial position for animation
-            gradientLayer.startPoint = CGPoint.zero
-            gradientLayer.endPoint = CGPoint(x: 1, y: 0)
-
-            // Create a mask to only show the border - with crash protection
-            let maskLayer = CAShapeLayer()
-            
-            // Create mask paths with defensive bounds checking
-            let outerRect = CGRect(
-                x: safeWidth / 2,
-                y: safeWidth / 2,
-                width: self.bounds.width + safeWidth,
-                height: self.bounds.height + safeWidth
-            )
-            
-            // Calculate safe corner radius
-            let safeCornerRadius = min(
-                self.layer.cornerRadius + safeWidth / 2,
-                min(outerRect.width, outerRect.height) / 2
-            )
-            
-            let maskPath = UIBezierPath(
-                roundedRect: outerRect,
-                cornerRadius: safeCornerRadius
-            )
-
-            // Create inner path with safer values
-            let innerRect = CGRect(
-                x: safeWidth * 1.5,
-                y: safeWidth * 1.5,
-                width: max(1, self.bounds.width - safeWidth),
-                height: max(1, self.bounds.height - safeWidth)
-            )
-            
-            let innerPath = UIBezierPath(
-                roundedRect: innerRect,
-                cornerRadius: max(0, self.layer.cornerRadius)
-            )
-            
-            // Only append inner path if it's valid
-            if innerRect.width > 0 && innerRect.height > 0 {
-                maskPath.append(innerPath.reversing())
-            }
-
-            maskLayer.path = maskPath.cgPath
-            maskLayer.fillRule = .evenOdd
-
-            gradientLayer.mask = maskLayer
-
-            // Add the gradient layer
-            self.layer.insertSublayer(gradientLayer, at: 0)
-            self.ledGradientLayer = gradientLayer
-
-            // Animate the LED flow with a slightly slower speed for better performance
-            let safeSpeed = max(speed, 3.0) // Ensure minimum animation time for performance
-            self.animateFlowingLED(speed: safeSpeed)
-            
-            Debug.shared.log(message: "Added flowing LED effect successfully", type: .debug)
-        }
+        // No LED effect will be applied
+        return
     }
 
     /// Remove any LED lighting effects from the view
@@ -345,59 +228,11 @@ extension UIView {
 }
 
 // Convenience method for applying LED effects to UIButton
-extension UIButton {
-    /// Add LED effect to button with appropriate settings
-    /// - Parameter color: The color of the LED effect (default: tint color)
-    func addButtonLEDEffect(color: UIColor? = nil) {
-        let effectColor = color ?? tintColor ?? .systemBlue
-        addLEDEffect(
-            color: effectColor,
-            intensity: 0.5,
-            spread: 12,
-            animated: true,
-            animationDuration: 2.0
-        )
-    }
-
-    /// Add flowing LED border to button
-    /// - Parameter color: The color of the LED effect (default: tint color)
-    func addButtonFlowingLEDEffect(color: UIColor? = nil) {
-        let effectColor = color ?? tintColor ?? .systemBlue
-        addFlowingLEDEffect(
-            color: effectColor,
-            intensity: 0.7,
-            width: 3,
-            speed: 3.0
-        )
-    }
-}
+// This extension is now empty as the LED effects have been disabled for stability reasons
 
 // Convenience methods for applying LED effects to UITabBar
-extension UITabBar {
-    /// Add a flowing LED effect around the tab bar
-    /// - Parameter color: The color of the effect (default: tint color)
-    func addTabBarLEDEffect(color: UIColor? = nil) {
-        let effectColor = color ?? tintColor ?? .systemBlue
-        addFlowingLEDEffect(
-            color: effectColor,
-            intensity: 0.6,
-            width: 2,
-            speed: 4.0
-        )
-    }
-}
+// This extension is now empty as the implementation has been moved to UITabBar+LED.swift
+// and has been disabled for stability reasons
 
 // Convenience methods for table view cells
-extension UITableViewCell {
-    /// Add subtle LED effect to highlight important cells
-    /// - Parameter color: The color of the LED effect
-    func addCellLEDEffect(color: UIColor) {
-        contentView.addLEDEffect(
-            color: color,
-            intensity: 0.3,
-            spread: 15,
-            animated: true,
-            animationDuration: 3.0
-        )
-    }
-}
+// This extension is now empty as the LED effects have been disabled for stability reasons

@@ -246,51 +246,9 @@ struct TabbarView: View {
                 )
             }
             
-            // Set up LED effects after a longer delay to ensure tab bar is fully initialized
-            // This approach is more robust as it doesn't assume specific view controller types
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-                Debug.shared.log(message: "Setting up TabBar LED effects with safer approach", type: .debug)
-                
-                // Find UITabBar instances more safely
-                guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                      let window = windowScene.windows.first else {
-                    return
-                }
-                
-                // Search for tab bars in the view hierarchy with proper safety checks
-                func findAllTabBars(in view: UIView?) -> [UITabBar] {
-                    guard let view = view else { return [] }
-                    
-                    var tabBars: [UITabBar] = []
-                    
-                    // Check if this view is a tab bar
-                    if let tabBar = view as? UITabBar {
-                        tabBars.append(tabBar)
-                    }
-                    
-                    // Recursively check all subviews
-                    for subview in view.subviews {
-                        tabBars.append(contentsOf: findAllTabBars(in: subview))
-                    }
-                    
-                    return tabBars
-                }
-                
-                // Find all tab bars and apply the LED effect
-                let allTabBars = findAllTabBars(in: window)
-                for tabBar in allTabBars {
-                    // Apply effect with proper error handling
-                    do {
-                        // Don't apply effect if tab bar isn't visible yet
-                        guard tabBar.window != nil, !tabBar.isHidden else { continue }
-                        
-                        tabBar.addTabBarLEDEffect(color: UIColor(hex: "#FF6482"))
-                        Debug.shared.log(message: "Successfully applied LED effect to tab bar", type: .debug)
-                    } catch {
-                        Debug.shared.log(message: "Error applying LED effect: \(error.localizedDescription)", type: .error)
-                    }
-                }
-            }
+            // Disabled LED effects as they were causing stability issues
+            // This prevents crashes when navigating through the app
+            Debug.shared.log(message: "TabBar LED effects have been disabled for stability", type: .debug)
         }
     }
 

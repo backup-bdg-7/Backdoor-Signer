@@ -132,14 +132,9 @@ class EntitlementsEditorViewController: FRSITableViewController {
     }
 
     private func applyCellLEDEffect(_ cell: UITableViewCell, animated: Bool) {
-        // Add a subtle LED effect to the cell
-        cell.contentView.addLEDEffect(
-            color: UIColor.systemBlue,
-            intensity: 0.2,
-            spread: 8,
-            animated: animated,
-            animationDuration: 3.0
-        )
+        // LED effect has been disabled for stability
+        // Use a simple highlight instead
+        cell.contentView.backgroundColor = UIColor.systemBlue.withAlphaComponent(0.05)
     }
 
     private func updateEmptyStateIfNeeded() {
@@ -180,14 +175,10 @@ class EntitlementsEditorViewController: FRSITableViewController {
             }
             emptyLabel.isHidden = false
 
-            // Add LED glow to empty state message
-            emptyLabel.addLEDEffect(
-                color: UIColor.systemBlue,
-                intensity: 0.3,
-                spread: 12,
-                animated: true,
-                animationDuration: 2.5
-            )
+            // LED effect has been disabled for stability
+            // Use a simple styling instead
+            emptyLabel.textColor = UIColor.systemBlue
+            emptyLabel.alpha = 0.8
         } else {
             emptyLabel.isHidden = true
         }
