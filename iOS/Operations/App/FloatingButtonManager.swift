@@ -21,330 +21,196 @@ final class FloatingButtonManager {
         set { stateQueue.sync { _isPresentingChat = newValue } }
     }
 
-    // Processing queue for handling asynchronous tasks
-    private let processingQueue = DispatchQueue(label: "com.backdoor.floatingButtonProcessing", qos: .userInitiated)
+    // Button management
+    private var activeButton: FloatingTerminalButton?
+    private let generator = UIImpactFeedbackGenerator(style: .medium)
 
-    // Monitor whether app is in active state
-    private var isAppActive = true
+    // MARK: - Lifecycle
 
     private init() {
-        // Log initialization
-        Debug.shared.log(message: "AI Manager initialized", type: .info)
-
-        // Set up notification observers
-        setupObservers()
-
-        // Set up the AI interaction
-        setupAIInteraction()
+        // Subscribe to notification
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(showAIAssistant),
+            name: .showAIAssistant,
+            object: nil
+        )
     }
 
     deinit {
-        // Clean up observers to prevent memory leaks
         NotificationCenter.default.removeObserver(self)
-        Debug.shared.log(message: "AI Manager deinit", type: .debug)
     }
 
-    private func setupObservers() {
-        // Use processingQueue to ensure thread safety when setting up observers
-        processingQueue.async { [weak self] in
-            guard let self = self else { return }
+    // MARK: - API
 
-            // Listen for button taps
-            NotificationCenter.default.addObserver(
-                self,
-                selector: #selector(self.handleAIRequest),
-                name: .showAIAssistant,
-                object: nil
-            )
-
-            // Listen for app lifecycle events
-            NotificationCenter.default.addObserver(
-                self,
-                selector: #selector(self.handleAppDidBecomeActive),
-                name: UIApplication.didBecomeActiveNotification,
-                object: nil
-            )
-
-            NotificationCenter.default.addObserver(
-                self,
-                selector: #selector(self.handleAppWillResignActive),
-                name: UIApplication.willResignActiveNotification,
-                object: nil
-            )
+    /// Shows or hides the floating button in the specified view controller
+    func toggleButton(in viewController: UIViewController) {
+        if activeButton != nil {
+            removeButton()
+        } else {
+            addButton(to: viewController)
         }
     }
 
-    @objc private func handleAppDidBecomeActive() {
-        isAppActive = true
+    /// Removes the button if it exists
+    func removeButton() {
+        guard let button = activeButton else { return }
+        
+        // Apply dismissal animation
+        UIView.animate(withDuration: 0.3, animations: {
+            button.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+            button.alpha = 0
+        }) { _ in
+            button.removeFromSuperview()
+            self.activeButton = nil
+        }
     }
 
-    @objc private func handleAppWillResignActive() {
-        isAppActive = false
-    }
+    // MARK: - Private Methods
 
-    private func setupAIInteraction() {
-        // Set up AI interaction
-        Debug.shared.log(message: "AI interaction setup complete", type: .debug)
-    }
-
-    // MARK: - Public Methods
-
-    /// Programmatically show the AI assistant
-    func showAIAssistant() {
-        handleAIRequest()
-    }
-    
-    /// Show the floating button - wrapper for showAIAssistant
-    func show() {
-        showAIAssistant()
-    }
-    
-    /// Hide the floating button
-    func hide() {
-        // Reset state if currently presenting
-        if isPresentingChat {
-            isPresentingChat = false
+    private func addButton(to viewController: UIViewController) {
+        guard activeButton == nil else { return }
+        
+        // Create button
+        let button = FloatingTerminalButton(type: .custom)
+        button.setImage(UIImage(systemName: "message.circle.fill"), for: .normal)
+        button.tintColor = .white
+        button.backgroundColor = .systemBlue
+        button.layer.cornerRadius = 28
+        button.layer.shadowColor = UIColor.black.cgColor
+        button.layer.shadowOffset = CGSize(width: 0, height: 3)
+        button.layer.shadowOpacity = 0.3
+        button.layer.shadowRadius = 4
+        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        
+        // Add to view with constraints
+        button.translatesAutoresizingMaskIntoConstraints = false
+        viewController.view.addSubview(button)
+        
+        NSLayoutConstraint.activate([
+            button.widthAnchor.constraint(equalToConstant: 56),
+            button.heightAnchor.constraint(equalToConstant: 56),
+            button.trailingAnchor.constraint(equalTo: viewController.view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            button.bottomAnchor.constraint(equalTo: viewController.view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
+        ])
+        
+        // Apply appearance animation
+        button.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+        button.alpha = 0
+        
+        UIView.animate(withDuration: 0.3) {
+            button.transform = .identity
+            button.alpha = 1
         }
         
-        Debug.shared.log(message: "Floating button hidden", type: .debug)
+        activeButton = button
     }
 
-    // MARK: - AI Request Handling
-
-    @objc private func handleAIRequest() {
-        // Skip if already presenting or app is inactive
-        guard !isPresentingChat, isAppActive else {
-            Debug.shared.log(message: "Skipping AI request - already presenting or app inactive", type: .debug)
+    @objc private func buttonTapped() {
+        generator.impactOccurred()
+        
+        guard let button = activeButton, let viewController = button.parentViewController else {
             return
         }
+        
+        presentAIAssistant(from: viewController)
+    }
 
-        // Set state to presenting
+    @objc private func showAIAssistant(notification: Notification) {
+        guard let viewController = notification.object as? UIViewController else {
+            print("showAIAssistant notification received without a valid view controller")
+            return
+        }
+        
+        presentAIAssistant(from: viewController)
+    }
+
+    private func presentAIAssistant(from presenter: UIViewController) {
+        // Prevent multiple presentations
+        guard !isPresentingChat else { return }
         isPresentingChat = true
-
-        // Find the top view controller to present from
-        guard let topVC = UIApplication.shared.topMostViewController() else {
-            Debug.shared.log(message: "No view controller found to present AI assistant", type: .error)
+        
+        // Use CoreDataManager to fetch or create a session
+        guard let context = try? CoreDataManager.shared.persistentContainer.viewContext else {
+            print("Failed to get context")
             isPresentingChat = false
             return
         }
-
-        // Skip if view controller is in transition
-        guard !topVC.isBeingDismissed, !topVC.isBeingPresented else {
-            Debug.shared.log(message: "View controller in transition, skipping AI request", type: .debug)
-            isPresentingChat = false
-            return
-        }
-
-        // Use a background task ID to ensure we have time to complete the task
-        var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid
-        backgroundTaskID = UIApplication.shared.beginBackgroundTask {
-            // End the task if we run out of time
-            if backgroundTaskID != .invalid {
-                UIApplication.shared.endBackgroundTask(backgroundTaskID)
-                backgroundTaskID = .invalid
-            }
-        }
-
-        // Prepare chat data on background queue
-        processingQueue.async { [weak self, weak topVC] in
-            guard let self = self else {
-                // End background task if we've been deallocated
-                if backgroundTaskID != .invalid {
-                    UIApplication.shared.endBackgroundTask(backgroundTaskID)
-                }
-                return
-            }
-
-            do {
-                // First verify the context exists with a try-catch
-                guard let topVCStillValid = topVC, !topVCStillValid.isBeingDismissed else {
-                    throw NSError(domain: "com.backdoor.aiManager", code: 1,
-                                  userInfo: [NSLocalizedDescriptionKey: "View controller no longer valid"])
-                }
-
-                // Update AI context
-                AppContextManager.shared.updateContext(topVCStillValid)
-                CustomAIContextProvider.shared.refreshContext()
-
-                // Create a new chat session with error handling
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateStyle = .medium
-                dateFormatter.timeStyle = .short
-                let timestamp = dateFormatter.string(from: Date())
-                let title = "Chat on \(timestamp)"
-
-                // Create the session with explicit error handling
-                guard let session = try? CoreDataManager.shared.createAIChatSession(title: title) else {
-                    throw NSError(domain: "com.backdoor.aiManager", code: 2,
-                                  userInfo: [NSLocalizedDescriptionKey: "Failed to create chat session"])
-                }
-
-                // Present the UI on the main thread
-                DispatchQueue.main.async { [weak self, weak topVCStillValid] in
-                    guard let self = self else {
-                        if backgroundTaskID != .invalid {
-                            UIApplication.shared.endBackgroundTask(backgroundTaskID)
-                        }
-                        return
-                    }
-
-                    // Verify view controller is still valid before presentation
-                    if let validTopVC = topVCStillValid, !validTopVC.isBeingDismissed {
-                        self.presentChatInterfaceSafely(with: session, from: validTopVC)
-                    } else {
-                        // Reset state if view controller is no longer valid
-                        self.isPresentingChat = false
-                        Debug.shared.log(
-                            message: "View controller no longer valid for chat presentation",
-                            type: .warning
-                        )
-                    }
-
-                    // End background task
-                    if backgroundTaskID != .invalid {
-                        UIApplication.shared.endBackgroundTask(backgroundTaskID)
-                        backgroundTaskID = .invalid
-                    }
-                }
-            } catch {
-                Debug.shared.log(message: "Failed to create chat session: \(error.localizedDescription)", type: .error)
-
-                // Reset state and show UI feedback on main thread
-                DispatchQueue.main.async { [weak self, weak topVC] in
-                    guard let self = self else { return }
-                    self.isPresentingChat = false
-
-                    // Show error alert if view controller is still valid
-                    if let validTopVC = topVC, !validTopVC.isBeingDismissed {
-                        self.showErrorAlert(
-                            message: "Chat initialization failed. Please try again later.",
-                            on: validTopVC
-                        )
-                    }
-
-                    // End background task
-                    if backgroundTaskID != .invalid {
-                        UIApplication.shared.endBackgroundTask(backgroundTaskID)
-                        backgroundTaskID = .invalid
-                    }
-                }
-            }
-        }
-    }
-
-    private func presentChatInterfaceSafely(with session: ChatSession, from presenter: UIViewController) {
-        // Validate the presenter is still valid and not in transition
-        guard !presenter.isBeingDismissed,
-              !presenter.isBeingPresented,
-              !presenter.isMovingToParent,
-              !presenter.isMovingFromParent,
-              presenter.view.window != nil
-        else {
-            Debug.shared.log(message: "Cannot present chat - view controller in invalid state", type: .error)
-            // Reset state
-            isPresentingChat = false
-            return
-        }
-
-        // Create chat view controller with the session
-        let chatVC = ChatViewController(session: session)
-
-        // Ensure we have a valid dismissal handler
-        chatVC.dismissHandler = { [weak self] in
-            DispatchQueue.main.async {
-                self?.isPresentingChat = false
-            }
-        }
-
-        // Wrap in navigation controller for better presentation
-        let navController = UINavigationController(rootViewController: chatVC)
-
-        // Configure presentation style based on device
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            // iPad-specific presentation
-            navController.modalPresentationStyle = .formSheet
-            navController.preferredContentSize = CGSize(width: 540, height: 620)
-        } else {
-            // iPhone presentation
-            if #available(iOS 15.0, *) {
-                if let sheet = navController.sheetPresentationController {
-                    // Use sheet presentation for iOS 15+
-                    sheet.detents = [.medium(), .large()]
-                    sheet.prefersGrabberVisible = true
-                    sheet.preferredCornerRadius = 24
-
-                    // Add delegate to handle dismissal properly
-                    sheet.delegate = chatVC
-                }
+        
+        let session: ChatSession
+        
+        // Get active session or create a new one
+        let fetchRequest: NSFetchRequest<ChatSession> = ChatSession.fetchRequest()
+        fetchRequest.fetchLimit = 1
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "createdAt", ascending: false)]
+        
+        do {
+            let results = try context.fetch(fetchRequest)
+            if let existingSession = results.first {
+                session = existingSession
             } else {
-                // Fallback for older iOS versions
-                navController.modalPresentationStyle = .fullScreen
+                session = ChatSession(context: context)
+                session.id = UUID()
+                session.createdAt = Date()
+                session.name = "New Chat"
+                try context.save()
             }
-        }
+            
+            // Create and present chat view controller
+            let chatVC = ChatViewController(session: session)
+            chatVC.dismissHandler = { [weak self] in
+                self?.isPresentingChat = false
+                print("Chat assistant dismissed")
+            }
+            
+            let navController = UINavigationController(rootViewController: chatVC)
+            
+            // Style based on device
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                // iPad presentation
+                navController.modalPresentationStyle = UIModalPresentationStyle.formSheet
+                navController.preferredContentSize = CGSize(width: 540, height: 620)
+            } else {
+                // iPhone presentation
+                if #available(iOS 15.0, *) {
+                    if let sheet = navController.sheetPresentationController {
+                        sheet.detents = [UISheetPresentationController.Detent.medium(), UISheetPresentationController.Detent.large()]
+                        sheet.prefersGrabberVisible = true
+                        sheet.preferredCornerRadius = 24
 
-        // Ensure safe presentation
-        presentViewControllerSafely(navController, from: presenter)
+                        // Add delegate to handle dismissal properly
+                        sheet.delegate = chatVC
+                    }
+                } else {
+                    navController.modalPresentationStyle = UIModalPresentationStyle.fullScreen
+                }
+            }
+
+            // Ensure safe presentation
+            presentViewControllerSafely(navController, from: presenter)
+            
+        } catch {
+            print("Failed to create or fetch chat session: \(error.localizedDescription)")
+            isPresentingChat = false
+        }
     }
 
     private func presentViewControllerSafely(_ viewController: UIViewController, from presenter: UIViewController) {
-        // Check if presenter is valid - if not, reset state and return
-        guard !presenter.isBeingDismissed, !presenter.isBeingPresented, presenter.view.window != nil else {
-            Debug.shared.log(message: "Presenter view controller is in invalid state for presentation", type: .error)
-            isPresentingChat = false
-            return
-        }
-
-        // Handle pending dismissals of any currently presented view controller
-        if let presentedVC = presenter.presentedViewController {
-            // If there's already a presented VC, dismiss it first
-            presentedVC.dismiss(animated: true) { [weak self, weak presenter, weak viewController] in
-                guard let self = self,
-                      let presenter = presenter,
-                      let viewController = viewController,
-                      !presenter.isBeingDismissed
-                else {
-                    self?.isPresentingChat = false
-                    return
+        // Find the top-most view controller
+        if let topController = UIApplication.shared.getTopViewController() {
+            // Check if we're already presenting something
+            if topController.presentedViewController != nil {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+                    self?.presentViewControllerSafely(viewController, from: presenter)
                 }
-
-                // Now present the chat interface
-                self.performPresentation(viewController, from: presenter)
+                return
             }
+            
+            // Present on the top controller
+            topController.present(viewController, animated: true, completion: nil)
         } else {
-            // No existing presentation, present directly
-            performPresentation(viewController, from: presenter)
-        }
-    }
-
-    private func performPresentation(_ viewController: UIViewController, from presenter: UIViewController) {
-        // Present directly without try-catch since UIKit presentation doesn't throw
-        presenter.present(viewController, animated: true) {
-            // Log success
-            Debug.shared.log(message: "AI assistant presented successfully", type: .info)
-        }
-
-        // Handle presentation failure through the completion handler if needed
-        // This is more reliable than a try-catch that will never be executed
-    }
-
-    private func showErrorAlert(message: String, on viewController: UIViewController) {
-        let alert = UIAlertController(
-            title: "Chat Error",
-            message: message,
-            preferredStyle: .alert
-        )
-
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
-
-        // Present alert with a slight delay to ensure any pending transitions complete
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            if viewController.presentedViewController == nil, !viewController.isBeingDismissed {
-                viewController.present(alert, animated: true)
-            } else {
-                // If we can't present, at least log the error
-                Debug.shared.log(message: "Could not present error alert: \(message)", type: .error)
-                self.isPresentingChat = false
-            }
+            // Fallback to the original presenter
+            presenter.present(viewController, animated: true, completion: nil)
         }
     }
 }
