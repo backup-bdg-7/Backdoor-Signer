@@ -1,74 +1,110 @@
-# Code Organization Guidelines
+# Code Organization Guide
 
 ## Overview
 
-The Backdoor Signer codebase follows a modular, feature-oriented architecture designed for maintainability, testability, and scalability.
+This codebase is organized using a feature-first approach, where all code related to a specific feature is grouped together, regardless of its type (models, views, controllers, etc.). This makes the codebase more intuitive to navigate and maintain.
 
 ## Directory Structure
 
-```
-BackdoorSigner/
- App/ - Application lifecycle and entry points
- Core/ - Foundational services and infrastructure
- Features/ - Feature modules organized by domain
- UI/ - Shared UI components and design system
- Magic/ - Specialized low-level signing implementation
- Configuration/ - Project configuration files
- Documentation/ - Documentation files
-```
+### App
+Contains application-level code that is not specific to any particular feature.
 
-## Module Guidelines
+- **Lifecycle**: Application lifecycle (AppDelegate, SceneDelegate)
+- **Resources**: Assets, storyboards, and other resources
+- **Launch**: Launch-related code
+- **Configuration**: Application configuration
 
-### App Module
-Contains application-level components and resources:
-- AppDelegate and lifecycle management
-- Resources (assets, storyboards, etc.)
-- Application-wide configuration
+### Features
+Contains all feature-specific code, with each feature having its own directory.
 
-### Core Module
-Contains foundational components used across the app:
-- Extensions - Framework extensions organized by the framework they extend
-- Data - Data persistence mechanisms (CoreData, UserDefaults)
-- Networking - Network communication
-- Services - Core application services
-- Utilities - Shared utility functions
+- **AIAssistant**: AI assistant feature
+  - **Models**: Data models specific to AI
+  - **Services**: AI services and logic
+  - **UI**: UI components specific to AI
+  - **Utils**: Utilities specific to AI
 
-### Features Module
-Each feature is a self-contained module with its own:
-- Models - Domain models and data structures
-- Services - Business logic and use cases
-- Views - UI components specific to the feature
-- Coordinators - Navigation and flow control
+- **AppSigning**: App signing feature
+  - **Models**: Signing data models
+  - **Services**: Signing services and logic
+  - **UI**: Signing UI components
+  - **Utils**: Signing-specific utilities
 
-### UI Module
-Contains shared UI components and design system:
-- Components - Reusable UI components organized by type
-- Design - Design system (colors, typography, etc.)
-- Base - Base classes for UI components
+- **FileManager**: File management feature
+  - **Models**: File data models
+  - **Services**: File operation services
+  - **UI**: File management UI
+  - **Utils**: File-specific utilities
 
-### Magic Module
-Contains low-level signing implementation:
-- Encryption - Encryption utilities
-- Decompression - File decompression utilities
-- Sign - Signing implementation
-- Utils - Signing-specific utilities
+- **AppLibrary**: App library management
+  - **Models**: App data models
+  - **Services**: App management services
+  - **UI**: Library UI components
+  - **Utils**: Library-specific utilities
 
-## Dependency Rules
+- **AppSettings**: Settings feature
+  - **Models**: Settings data models
+  - **Services**: Settings services
+  - **UI**: Settings UI components
+  - **Utils**: Settings-specific utilities
 
-1. App depends on Features, Core, UI, and Magic
-2. Features depend on Core and UI
-3. UI depends on Core
-4. Core has no dependencies on other modules
-5. Magic may depend on Core
+- **SourceManager**: Source repositories management
+  - **Models**: Source data models
+  - **Services**: Source management services
+  - **UI**: Source UI components
+  - **Utils**: Source-specific utilities
 
-## Import Guidelines
+- **Terminal**: Terminal feature
+  - **Models**: Terminal data models
+  - **Services**: Terminal services
+  - **UI**: Terminal UI components
+  - **Utils**: Terminal-specific utilities
 
-- Use explicit imports (e.g., `import Core.Extensions.UIKit`)
-- Avoid importing entire modules when only a specific component is needed
-- Keep imports organized and grouped by module
+- **Debugger**: Debugging functionality
+  - **Core**: Core debugging functionality
+  - **UI**: Debugging UI
 
-## Naming Conventions
+### Core
+Contains core functionality used across multiple features.
 
-- Files should be named according to their primary type/class
-- Use clear, descriptive names that indicate functionality
-- Follow Swift naming conventions (e.g., CamelCase for types, camelCase for variables)
+- **Data**: Data management
+  - **CoreData**: CoreData models and utilities
+  - **UserDefaults**: UserDefaults extensions and utilities
+  - **Models**: Shared data models
+
+- **Networking**: Networking utilities
+- **Extensions**: Framework extensions
+- **Services**: Shared services
+- **Utils**: Shared utilities
+- **Constants**: Global constants
+- **Localization**: Localization resources
+
+### UI
+Contains UI components and utilities used across multiple features.
+
+- **Components**: Reusable UI components
+- **Theme**: Theme and design system
+- **BaseClasses**: Base UI classes
+- **Extensions**: UI-specific extensions
+- **Helpers**: UI helper utilities
+
+### Security
+Contains security-related code.
+
+- **Encryption**: Encryption utilities
+- **Signing**: Code signing utilities
+- **Utils**: Security utilities
+
+## Principles
+
+1. **Feature-First**: All code specific to a feature is grouped together
+2. **Minimum Duplication**: Shared components are placed in Core, UI, or Security
+3. **Clear Boundaries**: Each feature has clear boundaries
+4. **Intuitive Navigation**: Easy to find related code
+5. **Consistent Structure**: Each feature follows the same internal structure
+
+## Guidelines for Adding New Code
+
+1. If code is specific to a feature, add it to the appropriate feature directory
+2. If code is used by multiple features, add it to Core, UI, or Security
+3. Follow the existing naming conventions and structure
+4. Update this document if you introduce new structural elements
